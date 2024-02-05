@@ -42,7 +42,7 @@ $(document).ready(() => {
     }
 
     //(這裡有錯!!) 密碼數+大寫英文字母+小寫英文字母共8位，不可為空
-    let password = $("password").val();
+    let password = $("#password").val();
     if (
       password.length < 8 ||
       !password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
@@ -56,6 +56,16 @@ $(document).ready(() => {
     }
 
     // 呼叫方法比對驗證碼，不可為空
+    // let verificationInput = $("#verificationInput").val();
+    // if (!verificationInput === code){
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "錯誤",
+    //     text: "請重新輸入驗證碼!",
+    //   });
+    //   return false;
+    // }
+
   }
 
   // 綁定登入按鈕
