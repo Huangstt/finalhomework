@@ -18,61 +18,51 @@ $(document).ready(() => {
     return code;
   }
 
-  // 比對輸入的驗證碼 方法
-  // function verifyCode(){
-  //     let code = generateVerificationCode();
-  //     let inputCode =  $("#verificationInput").value;
-  //     if(code === inputCode){
-
-  //     }
-
-  // }
-
   // 驗證登入
   function validateForm() {
+    let error = "";
+
     // 帳號英數至少8位，不可為空
     let account = $("#account").val();
     if (account.length < 8 || !account.match(/^[a-zA-Z0-9]+$/)) {
-      Swal.fire({
-        icon: "error",
-        title: "錯誤",
-        text: "帳號只能輸入英文及數字，且至少8位!",
-      });
-      return false;
+      error += "帳號只能輸入英文及數字，且至少8位!<br>";
     }
 
-    //(這裡有錯!!) 密碼數+大寫英文字母+小寫英文字母共8位，不可為空
+    //密碼數+大寫英文字母+小寫英文字母共8位，不可為空
     let password = $("#password").val();
     if (
       password.length < 8 ||
       !password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)
     ) {
-      Swal.fire({
-        icon: "error",
-        title: "錯誤",
-        text: "密馬需包含大小寫英文字母及數字，且至少8位!",
-      });
-      return false;
+      error += "密馬需包含大小寫英文字母及數字，且至少8位!<br>";
     }
 
     // 呼叫方法比對驗證碼，不可為空
-    // let verificationInput = $("#verificationInput").val();
-    // if (!verificationInput === code){
-    //   Swal.fire({
-    //     icon: "error",
-    //     title: "錯誤",
-    //     text: "請重新輸入驗證碼!",
-    //   });
-    //   return false;
-    // }
+    let verificationInput = $("#verificationInput").val();
+    let code = $("#verificationCode").text();
+    if (verificationInput !== code) {
+      error += "驗證碼錯誤，請重新輸入!<br>";
+    }
 
+    if(error != ""){
+      Swal.fire({
+        icon: "error",
+        title: "登入失敗",
+        html: error,
+      });
+      return false;
+    }
+    return true;
   }
 
   // 綁定登入按鈕
   $("#submitBtn").on("click", (e) => {
     if (!validateForm()) {
-      alert("success");
       e.preventDefault();
+      // 重新產生驗證碼
+      $("#verificationCode").text(generateVerificationCode());
+    } else {
+      alert("success");
     }
   });
 });
